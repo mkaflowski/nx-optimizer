@@ -197,6 +197,7 @@ def load_user_choices(Manager, config_file, mode=None):
     config = configparser.ConfigParser()
     config.read(config_file, encoding="utf-8")
 
+    Manager._patchInfo.MigrateUserConfig(config, Manager.UltracamPatchJson)
     loadGameConfig(Manager, config)
 
     # Load the enable/disable choices

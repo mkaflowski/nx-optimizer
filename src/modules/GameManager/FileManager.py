@@ -481,9 +481,11 @@ class FileManager:
                 settings = {}
                 if patchInfo.NativePayload:
                     choices = filemgr._manager.UserChoices
+                    distance_option = filemgr._manager.UltracamPatchJson["NativeFPS"]["render distance"]
+                    distance_index = distance_option["Name_Values"].index(choices["render distance"].get())
                     patch = build_botw_native_patch(
                         patch, os.path.join(patchInfo.Folder, patchInfo.NativePayload),
-                        fps=int(choices["fps"].get()), far_clip=int(choices["far clip"].get()),
+                        fps=int(choices["fps"].get()), far_clip=distance_option["Values"][distance_index],
                         fov=int(choices["fov"].get()),
                     )
                     graphics = {key: choices[key].get() for key in (

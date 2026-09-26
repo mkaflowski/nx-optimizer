@@ -22,16 +22,16 @@
             "Increments": 1,
             "Description": "50 leaves the original camera unchanged. Other values scale the world camera's freshly calculated FOV relative to 50, keeping relative aiming/cutscene zoom. Resulting angles are clamped to 5-120 degrees."
         },
-        "far clip": {
-            "Name": "Far clip distance",
-            "Class": "scale",
+        "render distance": {
+            "Name": "Render Distance",
+            "Class": "dropdown",
             "Section": "main",
             "Auto": false,
-            "Values": [1000, 25000],
-            "Type": "s32",
-            "Default": 25000,
-            "Increments": 1000,
-            "Description": "Far clipping plane of the world camera. 25000 preserves the original game's handling. Lower values hide distant geometry; this does not change object streaming or LOD distances."
+            "Name_Values": ["VERY LOW", "LOW", "MEDIUM", "DEFAULT", "(EXPERIMENTAL) HAS ISSUES"],
+            "Values": [1000, 5000, 12500, 25000, 35000],
+            "Default": 3,
+            "LegacyNumericOption": "far clip",
+            "Description": "Original BOTW Render Distance presets: VERY LOW 1000, LOW 5000, MEDIUM 12500, DEFAULT 25000, experimental 35000. Controls the world camera's far clipping plane, not object streaming or LOD. DEFAULT preserves the original game's handling."
         },
         "emulator scale": {
             "Name": "Emulator scale",

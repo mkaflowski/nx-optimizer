@@ -199,6 +199,15 @@ def verify(main_path, sdk_path):
             run(uc, 0xc2dbd0, 0xc2dbd4)
             assert struct.unpack("<f", uc.mem_read(obj+0x70, 4))[0] == 5000
     print("PASS: world camera FOV/zoom/clamps and far plane (20 input combinations)")
+    for distance in (1000, 5000, 12500, 25000, 35000):
+        patch = build_patch(base, folder / "NativeFPS-1.9.json", far_clip=distance)
+        uc = machine(patched_image(main_image, patch))
+        uc.reg_write(UC_ARM64_REG_X8, obj)
+        uc.reg_write(UC_ARM64_REG_S0, struct.unpack("<I", struct.pack("<f", 24000))[0])
+        run(uc, 0xc2dbd0, 0xc2dbd4)
+        expected = 24000 if distance == 25000 else distance
+        assert struct.unpack("<f", uc.mem_read(obj+0x70, 4))[0] == expected
+    print("PASS: original Render Distance presets, including DEFAULT passthrough and experimental 35000")
     print("CPU tests supplement, but do not replace, gameplay verification.")
 
 

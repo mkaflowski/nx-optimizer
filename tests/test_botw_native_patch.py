@@ -59,6 +59,16 @@ class NativePatchTests(unittest.TestCase):
             with self.subTest(values=values), self.assertRaises(ValueError):
                 self.build(**values)
 
+    def test_all_render_distance_presets_reach_the_native_parameter(self):
+        options = json.loads((FOLDER / "Options-Native-1.9.json").read_text())["NativeFPS"]["render distance"]
+        for distance in options["Values"]:
+            with self.subTest(distance=distance):
+                patch = self.build(far_clip=distance)
+                records = {int(p["offset"], 0): p for p in patch["patches"]}
+                values = struct.unpack("<Iffff", bytes.fromhex(records[FPS_CONFIG]["replacement"]))
+                self.assertEqual(values[2], distance)
+                self.assertEqual(0xc2dbd0 in records, distance != 25000)
+
     def test_unknown_executable_is_rejected(self):
         self.base["build_id"] = "0" * 64
         with self.assertRaises(ValueError):

@@ -1,13 +1,13 @@
 # BOTW 1.9.0: configurable FPS and graphics
 
-The experimental BOTW 1.9.0 profiles provide a **20-120 FPS limiter with measured frame
+The experimental BOTW 1.9.0 profile provides a **20-120 FPS limiter with measured frame
 time**, world-camera **FOV and far clip**, and emulator graphics controls for
 the Switch version of BOTW 1.9.0. The user confirmed **45 FPS with normal game
 speed and a visibly wider FOV** in Eden nightly `5f142c7926`.
 
-The earlier minimal fixed-60-FPS profile is also available and was confirmed
-at 60 FPS. Both are separate from UltraCam 1.6.0. Broader physics, menu, cutscene
-and other framerate testing remains pending; these profiles are experimental.
+There is one profile for 1.9.0, including 60 FPS as a selectable limit. It is
+separate from UltraCam 1.6.0. Broader physics, menu, cutscene and other framerate
+testing remains pending; the profile is experimental.
 
 ## Using NX Optimizer
 
@@ -18,7 +18,6 @@ profiles listed below.
 In **Select Game**, choose:
 
 - **Breath of The Wild**: existing UltraCam for **1.6.0**.
-- **BOTW 1.9.0 - 60 FPS (Experimental)**: minimal fixed 60 FPS.
 - **BOTW 1.9.0 - FPS + Graphics (Experimental)**: configurable FPS and graphics.
 
 Choose **Extract** to export a standalone mod to `Extracted Files`, or **Apply**
@@ -38,19 +37,21 @@ an exported folder or if your emulator uses a different mod manager.
 | --- | --- |
 | FPS limit | Integer 20-120, including 45; clock-based limiter with measured simulation time |
 | World camera FOV | 20-120; 50 preserves original behavior; other values scale the freshly calculated world-camera angle relative to 50 |
-| Far clip distance | 1000-25000; 25000 preserves original behavior; lower values override the world-camera far plane |
+| Render Distance | Original presets: VERY LOW (1000), LOW (5000), MEDIUM (12500), DEFAULT (25000), experimental (35000) |
 | Resolution scale (emulator) | Keep current, 1x, 2x, 3x, 4x |
 | Anti-aliasing (emulator) | Keep current, Off, FXAA, SMAA |
 | Anisotropic filtering (emulator) | Keep current, Automatic, 2x, 4x, 8x, 16x |
 
 The configurable mod is named `!!!BOTW 1.9.0 Optimizer` and needs **both its
-main and SDK patch files**. Disable the minimal `!!!BOTW 1.9.0 60 FPS` mod and
+main and SDK patch files**. Disable any previously exported `!!!BOTW 1.9.0 60 FPS` mod and
 UltraCam when using it. Apply manages these known conflicts; manual installation
 requires selecting the enabled mod in the emulator.
 
 FOV scaling preserves relative aiming/cutscene zoom, with resulting angles
-clamped to 5-120 degrees. Far clip is a camera clipping plane, not object
-streaming or LOD distance. The native framebuffer resolution, native FXAA/DR
+clamped to 5-120 degrees. Render Distance uses the same preset labels and numeric
+values as the original BOTW profile. It adjusts the world camera's far clipping
+plane (previously labelled Far clip distance), not object streaming or LOD.
+**DEFAULT is 25000** and preserves the game's own far-plane handling. The native framebuffer resolution, native FXAA/DR
 disabling, shadows, free camera and other UltraCam features are not ported.
 
 The three settings marked **emulator** affect its per-game configuration through
@@ -60,31 +61,37 @@ scale multiplies the game's output; AA Off disables only the emulator's added
 AA, not the game's own FXAA. Current Eden's resolution indices are mapped
 explicitly, including its 1/4x and 1.25x entries.
 
-### Minimal fixed-60 profile
+### Upgrading an earlier build
 
-This older profile has no injected limiter or graphics options. It targets
-sustained 60 FPS and may slow the game down below the target. Use the configurable
-profile for other FPS targets or measured frame-time correction.
+The redundant fixed-60 profile has been removed. Its saved selection ID resolves
+to the configurable profile. Existing configurable-profile settings are retained;
+otherwise the FPS default is 60. The old fixed-profile dropdown index is not
+imported as an FPS value.
+
+Saved numeric `far clip` values are mapped to the nearest Render Distance preset
+when no new preset has been saved yet. For example, 5000 becomes LOW and 25000
+becomes DEFAULT. Existing Render Distance choices take precedence.
 
 ## Export without GUI dependencies
 
 Python 3.10+ and extracted ExeFS files are sufficient; no game keys are needed
-by this exporter. For the minimal fixed-60 profile:
+by this exporter. Export the configurable profile with its default 60 FPS:
 
 ```powershell
 python tools/export_botw_fps.py --main "C:\path\to\exefs\main" --output "C:\path\to\mods"
 ```
 
-For the configurable profile, including the settings used in the user's test:
+Or choose settings, including those used in the user's test:
 
 ```powershell
 python tools/export_botw_fps.py --main "C:\path\to\exefs\main" --output "C:\path\to\mods" --fps 45 --fov 65 --far-clip 5000
 ```
 
-Configurable mode also verifies the sibling **`sdk`** executable. If it is in
+The exporter also verifies the sibling **`sdk`** executable. If it is in
 another folder, supply `--sdk "C:\path\to\sdk"`. Both files must match the known
 Build IDs and hashes before the exporter writes anything. Without graphics
-arguments, the configurable defaults are original FOV/far clip (50/25000).
+arguments, the defaults are original FOV/Render Distance (50/25000).
+`--far-clip` remains available as a numeric CLI option (1000-35000).
 
 The default format is `pchtxt`; use `--format ips` for Ryujinx. The exporter
 verifies the Build ID and SHA-256 before exporting. The graphical profile
@@ -117,11 +124,12 @@ to the same folder removes the previous `.ips` only if its contents exactly
 match this generator's patch; unrelated or user-edited patches are preserved.
 Restart emulation after updating the files.
 
-## Minimal fixed-60 implementation
+## Internal interval patch seed
 
-The patch uses the **native frame timer and presentation interval**, rather than
-porting the closed-source UltraCam binary. Both `setInterval` entry points are
-patched so that interval **1** is passed to both the timer and presentation code.
+The generator retains the initial four-instruction interval patch as its internal
+seed and a regression reference, not as a separate user-facing profile. The seed
+passes interval **1** to the timer and presentation code; the current generator
+then modifies presentation and adds the limiter/SDK/camera hooks described below.
 
 | NSO memory offset | Original bytes | New bytes |
 | --- | --- | --- |
@@ -147,7 +155,7 @@ Relevant 1.9 code locations:
 ## Configurable implementation
 
 `src/modules/GameManager/BotwNativePatch.py` builds the configurable patch from
-the minimal manifest and our own ARM64 payload. Runtime generation needs only
+the interval seed manifest and our own ARM64 payload. Runtime generation needs only
 the standard Python library; the game files are never bundled.
 
 - The framework's final tick call at `0x0112699C` runs a clock-based limiter
@@ -206,7 +214,8 @@ The configurable verifier additionally checks both module hashes, original
 instructions, code/state padding, the SDK minimum-interval regression, timing
 at 20/30/40/45/60/90/120 FPS, a relocated image, slow frames, long stalls,
 native category multipliers, and camera FOV/zoom/clamps and far-plane writes.
-UI smoke testing also covered three-profile switching, persisted settings,
+UI smoke testing also covered the 1.6/1.9 profiles, retired-selection handling,
+Render Distance migration, persisted settings,
 two-module export, no emulator changes on Extract, and per-game graphics/conflict
 handling on Apply in an isolated configuration.
 

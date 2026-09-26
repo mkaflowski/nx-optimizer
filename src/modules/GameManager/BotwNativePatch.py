@@ -58,8 +58,8 @@ def record(offset, expected, replacement, description):
 def build_patch(base_patch, payload_path, fps=60, far_clip=25000, fov=50):
     if isinstance(fps, bool) or not isinstance(fps, int) or not 20 <= fps <= 120:
         raise ValueError("FPS must be an integer between 20 and 120")
-    if isinstance(far_clip, bool) or not isinstance(far_clip, int) or not 1000 <= far_clip <= 25000:
-        raise ValueError("Far clip must be an integer between 1000 and 25000")
+    if isinstance(far_clip, bool) or not isinstance(far_clip, int) or not 1000 <= far_clip <= 35000:
+        raise ValueError("Far clip must be an integer between 1000 and 35000")
     if isinstance(fov, bool) or not isinstance(fov, int) or not 20 <= fov <= 120:
         raise ValueError("FOV must be an integer between 20 and 120")
     if base_patch["build_id"] != "CD57B23FA4BBAD65803D9788C01821EE00000000000000000000000000000000":

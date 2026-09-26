@@ -68,6 +68,12 @@ class Game_Manager:
             if ID.lower() == item.SelectionID.lower():
                 return item
 
+        # Retired selections resolve to the current profile, without importing
+        # their old option encoding (e.g. FPS dropdown index 0 is not 0 FPS).
+        for item in cls.GamePatches:
+            if any(ID.lower() == alias.lower() for alias in item.SelectionAliases):
+                return item
+
         # if we don't find anything return TOTK patch.
         for item in cls.GamePatches:
             if item.ID.lower() == cls._DefaultID.lower():
