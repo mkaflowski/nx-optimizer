@@ -62,7 +62,8 @@ class PatchProfileTests(unittest.TestCase):
         self.games.CreatePatchInfo(ROOT / "src/PatchInfo/Breath Of The Wild")
         configurable = self.games.GetJsonByID("01007EF00011E000@1.9.0-native")
         options = configurable.LoadJson()["NativeFPS"]
-        self.assertEqual(set(options), {"fps", "fov", "render distance", "emulator scale", "emulator aa", "anisotropy"})
+        self.assertEqual(set(options), {"fps", "fov", "render distance", "emulator scale"})
+        self.assertEqual(options["emulator scale"]["Name"], "Resolution Scale")
         self.assertEqual(options["fps"]["Values"], [20, 120])
         self.assertEqual(configurable.NativePayload, "NativeFPS-1.9.json")
         self.assertIn("!!!BOTW 1.9.0 60 FPS", configurable.ConflictingMods)

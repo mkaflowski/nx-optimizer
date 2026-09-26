@@ -488,12 +488,9 @@ class FileManager:
                         fps=int(choices["fps"].get()), far_clip=distance_option["Values"][distance_index],
                         fov=int(choices["fov"].get()),
                     )
-                    graphics = {key: choices[key].get() for key in (
-                        "emulator scale", "emulator aa", "anisotropy"
-                    )}
+                    graphics = {"emulator scale": choices["emulator scale"].get()}
                     emulator = filemgr.LegacyEmuName() if NxMode.isLegacy() else "ryujinx"
-                    settings = emulator_graphics(emulator, scale=graphics["emulator scale"],
-                                                 aa=graphics["emulator aa"], anisotropy=graphics["anisotropy"])
+                    settings = emulator_graphics(emulator, scale=graphics["emulator scale"])
                     patch["emulator_settings"] = graphics
                 root = os.path.join(os.getcwd(), "Extracted Files") if filemgr.is_extracting else modDir
                 destination = os.path.join(root, modName)

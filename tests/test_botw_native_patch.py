@@ -85,13 +85,9 @@ class NativePatchTests(unittest.TestCase):
 
     def test_emulator_graphics_enum_mapping(self):
         self.assertEqual(emulator_graphics("eden"), {})
-        self.assertEqual(emulator_graphics("eden", "2x", "SMAA", "16x"), {
-            "resolution_setup": "6", "anti_aliasing": "2", "max_anisotropy": "5",
-        })
+        self.assertEqual(emulator_graphics("eden", "2x"), {"resolution_setup": "6"})
         self.assertEqual(emulator_graphics("yuzu", "2x"), {"resolution_setup": "4"})
-        self.assertEqual(emulator_graphics("ryujinx", "2x", "SMAA", "16x"), {
-            "res_scale": 2, "anti_aliasing": "SmaaHigh", "max_anisotropy": 16,
-        })
+        self.assertEqual(emulator_graphics("ryujinx", "2x"), {"res_scale": 2})
         with self.assertRaises(ValueError):
             emulator_graphics("eden", "1.25x")
 

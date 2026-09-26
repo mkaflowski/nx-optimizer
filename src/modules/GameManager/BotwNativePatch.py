@@ -12,22 +12,14 @@ FPS_CONFIG = 0x015A1FC0
 STATE = 0x01DB21E0
 
 
-def emulator_graphics(emulator, scale="Keep current", aa="Keep current", anisotropy="Keep current"):
+def emulator_graphics(emulator, scale="Keep current"):
     """Explicit enum mapping; no changes for settings left at Keep current."""
     if scale not in ("Keep current", "1x", "2x", "3x", "4x"):
         raise ValueError("Unknown emulator resolution scale")
-    if aa not in ("Keep current", "Off", "FXAA", "SMAA"):
-        raise ValueError("Unknown emulator anti-aliasing mode")
-    if anisotropy not in ("Keep current", "Automatic", "2x", "4x", "8x", "16x"):
-        raise ValueError("Unknown anisotropic filtering mode")
     settings = {}
     if emulator.lower() == "ryujinx":
         if scale != "Keep current":
             settings["res_scale"] = int(scale[:-1])
-        if aa != "Keep current":
-            settings["anti_aliasing"] = {"Off": "None", "FXAA": "Fxaa", "SMAA": "SmaaHigh"}[aa]
-        if anisotropy != "Keep current":
-            settings["max_anisotropy"] = -1 if anisotropy == "Automatic" else int(anisotropy[:-1])
     else:
         # Current Eden includes both 1/4x and 1.25x entries. Original Yuzu's
         # integer scale indices are different; scale - 1 is not an enum index.
@@ -36,10 +28,6 @@ def emulator_graphics(emulator, scale="Keep current", aa="Keep current", anisotr
         }
         if scale != "Keep current":
             settings["resolution_setup"] = str(scales[scale])
-        if aa != "Keep current":
-            settings["anti_aliasing"] = str({"Off": 0, "FXAA": 1, "SMAA": 2}[aa])
-        if anisotropy != "Keep current":
-            settings["max_anisotropy"] = str({"Automatic": 0, "2x": 2, "4x": 3, "8x": 4, "16x": 5}[anisotropy])
     return settings
 
 

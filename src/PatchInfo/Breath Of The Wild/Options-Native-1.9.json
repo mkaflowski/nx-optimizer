@@ -34,7 +34,7 @@
             "Description": "Original BOTW Render Distance presets: VERY LOW 1000, LOW 5000, MEDIUM 12500, DEFAULT 25000, experimental 35000. Controls the world camera's far clipping plane, not object streaming or LOD. DEFAULT preserves the original game's handling."
         },
         "emulator scale": {
-            "Name": "Emulator scale",
+            "Name": "Resolution Scale",
             "Class": "dropdown",
             "Section": "main",
             "Auto": false,
@@ -42,26 +42,6 @@
             "Values": [0, 1, 2, 3, 4],
             "Default": 0,
             "Description": "Emulator resolution scaling, applied by Apply. Keep current preserves your setting. Extract does not change emulator configuration. This does not change the game's native framebuffer resolution or its dynamic resolution logic."
-        },
-        "emulator aa": {
-            "Name": "Emulator AA",
-            "Class": "dropdown",
-            "Section": "main",
-            "Auto": false,
-            "Name_Values": ["Keep current", "Off", "FXAA", "SMAA"],
-            "Values": [-1, 0, 1, 2],
-            "Default": 0,
-            "Description": "Post-processing anti-aliasing provided by the emulator. Applied by Apply only. Off disables the emulator's added AA, not BOTW's own anti-aliasing."
-        },
-        "anisotropy": {
-            "Name": "Emulator AF",
-            "Class": "dropdown",
-            "Section": "main",
-            "Auto": false,
-            "Name_Values": ["Keep current", "Automatic", "2x", "4x", "8x", "16x"],
-            "Values": [-1, 0, 2, 4, 8, 16],
-            "Default": 0,
-            "Description": "Emulator texture filtering. Applied by Apply only; Keep current preserves the existing setting."
         }
     }
 }

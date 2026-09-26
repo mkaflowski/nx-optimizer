@@ -1,7 +1,7 @@
 # BOTW 1.9.0: configurable FPS and graphics
 
 The experimental BOTW 1.9.0 profile provides a **20-120 FPS limiter with measured frame
-time**, world-camera **FOV and far clip**, and emulator graphics controls for
+time**, world-camera **FOV and Render Distance**, and **Resolution Scale** for
 the Switch version of BOTW 1.9.0. The user confirmed **45 FPS with normal game
 speed and a visibly wider FOV** in Eden nightly `5f142c7926`.
 
@@ -38,9 +38,7 @@ an exported folder or if your emulator uses a different mod manager.
 | FPS limit | Integer 20-120, including 45; clock-based limiter with measured simulation time |
 | World camera FOV | 20-120; 50 preserves original behavior; other values scale the freshly calculated world-camera angle relative to 50 |
 | Render Distance | Original presets: VERY LOW (1000), LOW (5000), MEDIUM (12500), DEFAULT (25000), experimental (35000) |
-| Resolution scale (emulator) | Keep current, 1x, 2x, 3x, 4x |
-| Anti-aliasing (emulator) | Keep current, Off, FXAA, SMAA |
-| Anisotropic filtering (emulator) | Keep current, Automatic, 2x, 4x, 8x, 16x |
+| Resolution Scale | Emulator scaling: Keep current, 1x, 2x, 3x, 4x |
 
 The configurable mod is named `!!!BOTW 1.9.0 Optimizer` and needs **both its
 main and SDK patch files**. Disable any previously exported `!!!BOTW 1.9.0 60 FPS` mod and
@@ -54,12 +52,13 @@ plane (previously labelled Far clip distance), not object streaming or LOD.
 **DEFAULT is 25000** and preserves the game's own far-plane handling. The native framebuffer resolution, native FXAA/DR
 disabling, shadows, free camera and other UltraCam features are not ported.
 
-The three settings marked **emulator** affect its per-game configuration through
-**Apply**. **Extract** writes instructions containing the requested settings but
-does not change emulator configuration. Keep current is the default. Resolution
-scale multiplies the game's output; AA Off disables only the emulator's added
-AA, not the game's own FXAA. Current Eden's resolution indices are mapped
-explicitly, including its 1/4x and 1.25x entries.
+**Resolution Scale**, which was also available in the original application,
+affects the emulator's per-game configuration through **Apply**. **Extract**
+writes instructions with the requested scale but does not change emulator
+configuration. Keep current is the default. Scaling multiplies the game's output.
+Current Eden's indices are mapped explicitly, including its 1/4x and 1.25x entries.
+The extra emulator AA/AF controls from the initial build have been removed;
+their saved values are ignored and existing emulator AA/AF settings are preserved.
 
 ### Upgrading an earlier build
 
