@@ -40,6 +40,11 @@ an exported folder or if your emulator uses a different mod manager.
 | Render Distance | Original presets: VERY LOW (1000), LOW (5000), MEDIUM (12500), DEFAULT (25000), experimental (35000) |
 | Resolution Scale | Emulator scaling: Keep current, 1x, 2x, 3x, 4x |
 
+Shared defaults match the original BOTW 1.6 UI: **60 FPS, FOV 50, Render Distance
+DEFAULT (25000), Resolution Scale 1x**. Select **Default** under Optimizer Presets
+to reset all four settings. Previously saved custom choices still take precedence
+on startup until you explicitly reset them.
+
 The configurable mod is named `!!!BOTW 1.9.0 Optimizer` and needs **both its
 main and SDK patch files**. Disable any previously exported `!!!BOTW 1.9.0 60 FPS` mod and
 UltraCam when using it. Apply manages these known conflicts; manual installation
@@ -55,7 +60,8 @@ disabling, shadows, free camera and other UltraCam features are not ported.
 **Resolution Scale**, which was also available in the original application,
 affects the emulator's per-game configuration through **Apply**. **Extract**
 writes instructions with the requested scale but does not change emulator
-configuration. Keep current is the default. Scaling multiplies the game's output.
+configuration. The default is **1x**, matching the original 1.6 profile;
+Keep current is available as an explicit choice. Scaling multiplies the game's output.
 Current Eden's indices are mapped explicitly, including its 1/4x and 1.25x entries.
 The extra emulator AA/AF controls from the initial build have been removed;
 their saved values are ignored and existing emulator AA/AF settings are preserved.

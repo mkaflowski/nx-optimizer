@@ -40,8 +40,8 @@
             "Auto": false,
             "Name_Values": ["Keep current", "1x", "2x", "3x", "4x"],
             "Values": [0, 1, 2, 3, 4],
-            "Default": 0,
-            "Description": "Emulator resolution scaling, applied by Apply. Keep current preserves your setting. Extract does not change emulator configuration. This does not change the game's native framebuffer resolution or its dynamic resolution logic."
+            "Default": 1,
+            "Description": "Emulator resolution scaling, applied by Apply. Default is 1x, as in the original BOTW 1.6 profile. Keep current preserves your setting. Extract does not change emulator configuration. This does not change the game's native framebuffer resolution or its dynamic resolution logic."
         }
     }
 }
