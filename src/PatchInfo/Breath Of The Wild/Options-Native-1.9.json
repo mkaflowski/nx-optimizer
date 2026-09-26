@@ -1,0 +1,67 @@
+{
+    "NativeFPS": {
+        "fps": {
+            "Name": "FPS limit",
+            "Class": "scale",
+            "Section": "main",
+            "Auto": false,
+            "Values": [20, 120],
+            "Type": "s32",
+            "Default": 60,
+            "Increments": 1,
+            "Description": "Experimental clock-based FPS limit. Supports values such as 45 FPS. Native simulation time uses measured frame duration, including slower frames. Keep emulator speed at 100%."
+        },
+        "fov": {
+            "Name": "World camera FOV",
+            "Class": "scale",
+            "Section": "main",
+            "Auto": false,
+            "Values": [20, 120],
+            "Type": "s32",
+            "Default": 50,
+            "Increments": 1,
+            "Description": "50 leaves the original camera unchanged. Other values scale the world camera's freshly calculated FOV relative to 50, keeping relative aiming/cutscene zoom. Resulting angles are clamped to 5-120 degrees."
+        },
+        "far clip": {
+            "Name": "Far clip distance",
+            "Class": "scale",
+            "Section": "main",
+            "Auto": false,
+            "Values": [1000, 25000],
+            "Type": "s32",
+            "Default": 25000,
+            "Increments": 1000,
+            "Description": "Far clipping plane of the world camera. 25000 preserves the original game's handling. Lower values hide distant geometry; this does not change object streaming or LOD distances."
+        },
+        "emulator scale": {
+            "Name": "Emulator scale",
+            "Class": "dropdown",
+            "Section": "main",
+            "Auto": false,
+            "Name_Values": ["Keep current", "1x", "2x", "3x", "4x"],
+            "Values": [0, 1, 2, 3, 4],
+            "Default": 0,
+            "Description": "Emulator resolution scaling, applied by Apply. Keep current preserves your setting. Extract does not change emulator configuration. This does not change the game's native framebuffer resolution or its dynamic resolution logic."
+        },
+        "emulator aa": {
+            "Name": "Emulator AA",
+            "Class": "dropdown",
+            "Section": "main",
+            "Auto": false,
+            "Name_Values": ["Keep current", "Off", "FXAA", "SMAA"],
+            "Values": [-1, 0, 1, 2],
+            "Default": 0,
+            "Description": "Post-processing anti-aliasing provided by the emulator. Applied by Apply only. Off disables the emulator's added AA, not BOTW's own anti-aliasing."
+        },
+        "anisotropy": {
+            "Name": "Emulator AF",
+            "Class": "dropdown",
+            "Section": "main",
+            "Auto": false,
+            "Name_Values": ["Keep current", "Automatic", "2x", "4x", "8x", "16x"],
+            "Values": [-1, 0, 2, 4, 8, 16],
+            "Default": 0,
+            "Description": "Emulator texture filtering. Applied by Apply only; Keep current preserves the existing setting."
+        }
+    }
+}

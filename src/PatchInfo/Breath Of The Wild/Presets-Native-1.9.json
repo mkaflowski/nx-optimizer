@@ -1,0 +1,6 @@
+{
+    "45 FPS": {"fps": 45, "far clip": 25000},
+    "60 FPS": {"fps": 60, "far clip": 25000},
+    "90 FPS": {"fps": 90, "far clip": 25000},
+    "120 FPS": {"fps": 120, "far clip": 25000}
+}

@@ -1,0 +1,14 @@
+{
+    "NativeFPS": {
+        "fps": {
+            "Name": "FPS (Experimental)",
+            "Class": "dropdown",
+            "Section": "main",
+            "Auto": false,
+            "Name_Values": ["60 FPS"],
+            "Values": [60],
+            "Default": 0,
+            "Description": "Experimental fixed 60 FPS patch for BOTW 1.9.0, Build ID CD57B23FA4BBAD65803D9788C01821EE. Uses native game timing. IPSwitch export confirmed at 60 FPS in Eden; broader gameplay testing pending. This is not UltraCam or dynamic FPS. Keep emulator speed at 100%. Disable other FPS mods and the 1.6 UltraCam mod. Graphics settings are controlled by your emulator."
+        }
+    }
+}

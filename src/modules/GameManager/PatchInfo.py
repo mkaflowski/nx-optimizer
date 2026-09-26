@@ -22,6 +22,7 @@ class PatchInfo:
     def __init__(self, folder: str, JsonFile: json):  # fmt: skip
         self.Folder = folder
         self.ID = self.Json(JsonFile, "ID") # mandatory
+        self.SelectionID = JsonFile.get("SelectionID", self.ID)
         self.Name = self.Json(JsonFile, "Name") # mandatory
         self.Versions = self.Json(JsonFile, "Versions", [])
         self.ModName = self.Json(JsonFile, "ModName", "!!!NX-Optimizer")
@@ -31,6 +32,11 @@ class PatchInfo:
         self.isSDconfig = self.Json(JsonFile, "SD", False)
         self.ResolutionScale = self.Json(JsonFile, "EmulationScale", True)
         self.ModVersion = self.Json(JsonFile, "Mod_Version", "1.0")
+        self.OptionsFile = JsonFile.get("Config", "Options.json")
+        self.PresetsFile = JsonFile.get("Presets", "Presets.json")
+        self.ExefsPatch = JsonFile.get("ExefsPatch")
+        self.NativePayload = JsonFile.get("NativePayload")
+        self.ConflictingMods = JsonFile.get("ConflictingMods", [])
 
         self.Support_Benchmark = self.Json(JsonFile, "benchmarks", False)
         self.Benchmark_Version = self.Json(JsonFile, "benchmarks_version", 0)
@@ -52,12 +58,12 @@ class PatchInfo:
         return int(self.ID, 16)
 
     def LoadJson(self):
-        Location = os.path.join(self.Folder, "Options.json")
+        Location = os.path.join(self.Folder, self.OptionsFile)
         with open(Location, "r", encoding="utf-8") as file:
             return json.load(file)
 
     def LoadPresetsJson(self):
-        Location = os.path.join(self.Folder, "Presets.json")
+        Location = os.path.join(self.Folder, self.PresetsFile)
 
         if not os.path.exists(Location):
             return {"Saved": {}}
